@@ -1,5 +1,3 @@
-from __future__ import division
-from __future__ import print_function
 from .basemodel import BaseModel
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence, PackedSequence
 import os.path
@@ -118,8 +116,8 @@ class SketchR2CNN(BaseModel):
         self.register_nets(nets, names, train_flags)
         self.to(device)
 
-    def __call__(self, points, points_offset, lengths):
-        intensities, _ = self.rnn(points_offset, lengths)
+    def __call__(self, points, lengths):
+        intensities, _ = self.rnn(points, lengths)
 
         images = RasterIntensityFunc.apply(points, intensities, self.img_size, self.thickness, self.eps, self.device)
         if images.size(1) == 1:

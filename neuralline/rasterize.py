@@ -1,6 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-
 from .jit import rasterize_cuda
 from torch.autograd import Function
 import numpy as np
@@ -48,7 +45,7 @@ class RasterIntensityFunc(Function):
         grad_intensities = torch.zeros_like(ctx.saved_tensors[4])
 
         rasterize_cuda.rasterize_backward(
-            grad_intensities,
+            grad_intensities.contiguous(),
             grad_line_map.contiguous(),
             ctx.saved_tensors[0], 
             ctx.saved_tensors[1], 

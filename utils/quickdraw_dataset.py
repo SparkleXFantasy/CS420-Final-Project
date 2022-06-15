@@ -1,13 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-
-from .sketch_util import SketchUtil
 from torch.utils.data import Dataset
 import h5py
 import numpy as np
 import os.path as osp
 import pickle
-import random
 
 
 class QuickDrawDataset(Dataset):
