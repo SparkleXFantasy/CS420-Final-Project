@@ -3,7 +3,9 @@ import h5py
 import numpy as np
 import os.path as osp
 import pickle
-
+from PIL import Image
+import torch
+from torchvision import transforms
 
 class QuickDrawDataset(Dataset):
     mode_indices = {'train': 0, 'valid': 1, 'test': 2}
@@ -48,3 +50,64 @@ class QuickDrawDataset(Dataset):
 
     def get_name_prefix(self):
         return 'QuickDraw-{}'.format(self.mode)
+
+
+class QuickDrawVisualDataset(Dataset):
+    mode_indices = {'train': 0, 'valid': 1, 'test': 2}
+
+    def __init__(self, root_dir, mode):
+        self.root_dir = root_dir
+        self.mode = mode
+        self.datalen = [3000, 1000, 1000]
+        self.categories = None
+        self.data_category_index = 0
+        self.data_item_index = 0
+        self.data_np = None
+        self.trans = transforms.Compose([
+                transforms.Grayscale(num_output_channels=3),
+    	    	transforms.Resize([224, 224]),
+                transforms.ToTensor()
+            ]
+        )
+
+        with open(osp.join(root_dir, 'categories.pkl'), 'rb') as fh:
+            saved_pkl = pickle.load(fh)
+            self.categories = saved_pkl['categories']
+
+        print('[*] Created a new {} dataset: {}'.format(mode, root_dir))
+
+    def __len__(self):
+        return self.datalen[self.mode_indices[self.mode]] * len(self.categories)
+
+    def __getitem__(self, idx):
+        if self.data_np is None:
+            self.data_np = np.load(osp.join(self.root_dir, '{}_png.npz'.format(self.categories[self.data_category_index])))[self.mode]
+        image = self.data_np[self.data_item_index]
+        pil_img = Image.fromarray(image)
+        resized_img = self.trans(pil_img)
+        resized_img = np.array(resized_img)
+        sample = {'image': resized_img, 'category': self.data_category_index + 1}
+
+        if self.data_item_index >= self.datalen[self.mode_indices[self.mode]]:
+            if self.data_category_index >= len(self.categories) - 1:
+                self.data_category_index = 0
+            else:
+                self.data_category_index += 1
+            self.data_item_index = 0
+            self.data_np = np.load(osp.join(self.root_dir, '{}_png.npz'.format(self.categories[self.data_category_index])))[self.mode]
+
+        return sample
+
+    def __del__(self):
+        self.dispose()
+
+    def dispose(self):
+        # if self.data is not None:
+        #     self.data.close()
+        pass
+
+    def num_categories(self):
+        return len(self.categories)
+
+    def get_name_prefix(self):
+        return 'QuickDrawVisual-{}'.format(self.mode)
