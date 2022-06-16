@@ -1,0 +1,39 @@
+meta_data:
+  pipeline_exp_name: 'cnn'
+  description: "a baseline of cnn model"
+  num_workers: 1
+  use_gpu: true
+  log: true
+  wandb: true
+  key_config:
+    common:
+      model_fn: 'model_fn'
+    algo_training:
+
+
+
+common:
+  dataset_root: "../dataset/quickdraw_visual"
+  model_fn: "resnet101" # "resnet50", "resnet101", "densenet161", "sketchanet"
+
+algo_training:
+  variables:
+    learn_rate: [ 1.0e-4 ]
+    seed: [ 0, 1, 2 ]
+
+  constants:
+    exp_name: "cnn"  # exp_name is required
+    script_path: scripts.cnn
+    batch_size: 32
+    imgsize: 224
+    learn_rate_step: -1
+    num_epochs: 500
+    report_scalar_freq: 100
+    thickness: 1.0
+    valid_freq: 1
+    weight_decay: -1
+    dropout: 0.5
+    intensity_channels: 8
+
+
+
