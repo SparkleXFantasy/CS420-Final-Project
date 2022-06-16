@@ -15,7 +15,6 @@ click==8.0.4
 crcmod==1.7
 cryptography==37.0.2
 cycler==0.11.0
-decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
 docker-pycreds==0.4.0
 fasteners==0.17.3
 fire==0.4.0
@@ -37,7 +36,6 @@ importlib-metadata==4.8.3
 importlib-resources==5.4.0
 ipykernel==4.9.0
 ipython==6.1.0
-ipython-genutils @ file:///tmp/build/80754af9/ipython_genutils_1606773439826/work
 jedi==0.10.2
 joblib==1.1.0
 jupyter-core==4.5.0

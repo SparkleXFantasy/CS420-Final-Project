@@ -60,9 +60,10 @@ class QuickDrawVisualDataset(Dataset):
         self.mode = mode
         self.datalen = [3000, 1000, 1000]
         self.categories = None
-        self.data_category_index = 0
-        self.data_item_index = 0
-        self.data_np = None
+        # self.data_category_index = 0
+        # self.data_item_index = 0
+        # self.data_np = None
+        self.dataset_list = []
         self.trans = transforms.Compose([
                 transforms.Grayscale(num_output_channels=3),
     	    	transforms.Resize([224, 224]),
@@ -76,26 +77,20 @@ class QuickDrawVisualDataset(Dataset):
 
         print('[*] Created a new {} dataset: {}'.format(mode, root_dir))
 
+        for category in self.categories:
+            self.dataset_list.append(np.load(osp.join(self.root_dir, '{}_png.npz'.format(category)))[self.mode])
+
     def __len__(self):
         return self.datalen[self.mode_indices[self.mode]] * len(self.categories)
 
     def __getitem__(self, idx):
-        if self.data_np is None:
-            self.data_np = np.load(osp.join(self.root_dir, '{}_png.npz'.format(self.categories[self.data_category_index])))[self.mode]
-        image = self.data_np[self.data_item_index]
+        data_category_index = idx // self.datalen[self.mode_indices[self.mode]]
+        data_item_index = idx % self.datalen[self.mode_indices[self.mode]]
+        image = self.dataset_list[data_category_index][data_item_index]
         pil_img = Image.fromarray(image)
         resized_img = self.trans(pil_img)
         resized_img = np.array(resized_img)
-        sample = {'image': resized_img, 'category': self.data_category_index + 1}
-
-        if self.data_item_index >= self.datalen[self.mode_indices[self.mode]]:
-            if self.data_category_index >= len(self.categories) - 1:
-                self.data_category_index = 0
-            else:
-                self.data_category_index += 1
-            self.data_item_index = 0
-            self.data_np = np.load(osp.join(self.root_dir, '{}_png.npz'.format(self.categories[self.data_category_index])))[self.mode]
-
+        sample = {'image': resized_img, 'category': data_category_index}
         return sample
 
     def __del__(self):

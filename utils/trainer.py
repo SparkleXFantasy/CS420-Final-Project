@@ -303,7 +303,6 @@ class CNNTrain(object):
         is_train = mode == 'train'
 
         category = data_batch['category'].to(self.device)
-
         if is_train:
             optimizer.zero_grad()
         with torch.set_grad_enabled(is_train):
