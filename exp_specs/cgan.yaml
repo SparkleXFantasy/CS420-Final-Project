@@ -22,13 +22,17 @@ algo_training:
     seed: [ 0, 1, 2 ]
 
   constants:
-    exp_name: "cnn"  # exp_name is required
-    script_path: scripts.cnn
-    batch_size: 32
+    exp_name: "cgan"  # exp_name is required
+    script_path: scripts.cgan
+    batch_size: 2
     imgsize: 224
+    noise_size: 218
+    adv_loss_weight: 1
+    gen_dis_frequency_ratio: 20
+    visual_freq: 100
     learn_rate_step: -1
-    num_epochs: 20
-    report_scalar_freq: 100
+    num_epochs: 30
+    report_scalar_freq: 50
     thickness: 1.0
     valid_freq: 1
     weight_decay: -1
