@@ -14,12 +14,12 @@ meta_data:
 
 common:
   dataset_root: "../dataset"
-  model_fn: "resnet50" # "resnet50", "resnet101", "densenet161", "sketchanet"
+  model_fn: "densenet161" # "resnet50", "resnet101", "densenet161", "sketchanet"
 
 algo_training:
   variables:
     learn_rate: [ 1.0e-4 ]
-    seed: [ 0, 1, 2 ]
+    seed: [ 0 ]
 
   constants:
     exp_name: "r2cnn_resnet50"  # exp_name is required
