@@ -14,26 +14,20 @@ meta_data:
 
 common:
   dataset_root: "../dataset"
-  model_fn: "densenet161" # "resnet50", "resnet101", "densenet161", "sketchanet"
+  model_fn: "png2npz" # "resnet50", "resnet101", "densenet161", "sketchanet"
+  num_workers: 32
 
 algo_training:
   variables:
-    learn_rate: [ 1.0e-4 ]
-    seed: [ 0 ]
+    seed: [ 0 ] # seed is needed
 
   constants:
-    exp_name: "r2cnn_resnet50"  # exp_name is required
-    script_path: scripts.r2cnn
+    exp_name: "png2npz"  # exp_name is required
+    script_path: scripts.png2npz
     batch_size: 48
     imgsize: 224
     learn_rate_step: -1
-    num_epochs: 1
-    report_scalar_freq: 100
     thickness: 1.0
-    valid_freq: 1
-    weight_decay: -1
-    dropout: 0.5
-    intensity_channels: 8
 
 
 

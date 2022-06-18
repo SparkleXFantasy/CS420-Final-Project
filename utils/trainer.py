@@ -18,12 +18,14 @@ from launcher import logger
 from models.modelzoo import CNN_MODELS, CNN_IMAGE_SIZES
 from models.sketch_r2cnn import SketchR2CNN
 from models.cgan import Generator, Discriminator
+from models.cnn import CNN
 
 def train_data_collate(batch):
     length_list = [len(item['points3']) for item in batch]
     max_length = max(length_list)
 
     points3_padded_list = list()
+    points3_offset_list = list()
     intensities_list = list()
     category_list = list()
     for item in batch:
@@ -34,6 +36,10 @@ def train_data_collate(batch):
         points3_padded[0:points3_length, :] = points3
         points3_padded_list.append(points3_padded)
 
+        points3_offset = np.copy(points3_padded)
+        points3_offset[1:points3_length, 0:2] = points3[1:, 0:2] - points3[:points3_length - 1, 0:2]
+        points3_offset_list.append(points3_offset)
+
         intensities = np.zeros((max_length,), np.float32)
         intensities[:points3_length] = 1.0 - np.arange(points3_length, dtype=np.float32) / float(points3_length - 1)
         intensities_list.append(intensities)
@@ -42,6 +48,7 @@ def train_data_collate(batch):
 
     batch_padded = {
         'points3': points3_padded_list,
+        'points3_offset': points3_offset_list,
         'points3_length': length_list,
         'intensities': intensities_list,
         'category': category_list
@@ -128,13 +135,14 @@ class SketchR2CNNTrain(object):
         is_train = mode == 'train'
 
         points = data_batch['points3'].to(self.device)
+        points_offset = data_batch['points3_offset'].to(self.device)
         points_length = data_batch['points3_length']
         category = data_batch['category'].to(self.device)
 
         if is_train:
             optimizer.zero_grad()
         with torch.set_grad_enabled(is_train):
-            logits, attention, images = model(points, points_length)
+            logits, attention, images = model(points, points_offset, points_length)
             loss = criterion(logits, category)
             if is_train:
                 loss.backward()
@@ -528,7 +536,6 @@ class CGANTrain(object):
             for i in range(d_model.num_categories):
                 confidence_logits[i] = d_model(imgs, i).squeeze().to(self.device)
             res_list.append(confidence_logits)
-            
 
         return res_list
 
