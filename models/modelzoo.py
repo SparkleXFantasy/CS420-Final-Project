@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
+from swin_transformer import SwinTransformer
 
 
 class CNNBackbone(torch.nn.Module):
@@ -204,12 +205,24 @@ class SketchANetBackbone(CNNBackbone):
 
         return x
 
+class SwinTransformerBackbone(CNNBackbone):
+    def _init(self):
+        self.swin_transformer = SwinTransformer(in_chans=self.in_channels,num_classes=512)
+
+        num_out_features = 512
+        return num_out_features
+
+    def forward(self, x):
+
+
+        return self.swin_transformer(x)
 
 CNN_MODELS = {
     'densenet161': DenseNet161Backbone,
     'resnet101': ResNet101Backbone,
     'resnet50': ResNet50Backbone,
     'sketchanet': SketchANetBackbone,
+    'swintransformer': SwinTransformerBackbone
 }
 
 CNN_IMAGE_SIZES = {
@@ -217,4 +230,5 @@ CNN_IMAGE_SIZES = {
     'resnet101': 224,
     'resnet50': 224,
     'sketchanet': 225,
+    'swintransformer': 224
 }
