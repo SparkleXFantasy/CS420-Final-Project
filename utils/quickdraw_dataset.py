@@ -7,6 +7,7 @@ from PIL import Image
 import torch
 from torchvision import transforms
 
+
 class QuickDrawDataset(Dataset):
     mode_indices = {'train': 0, 'valid': 1, 'test': 2}
 
@@ -65,10 +66,10 @@ class QuickDrawVisualDataset(Dataset):
         # self.data_np = None
         self.dataset_list = []
         self.trans = transforms.Compose([
-                transforms.Grayscale(num_output_channels=3),
-    	    	transforms.Resize([224, 224]),
-                transforms.ToTensor()
-            ]
+            transforms.Grayscale(num_output_channels=3),
+            transforms.Resize([224, 224]),
+            transforms.ToTensor()
+        ]
         )
 
         with open(osp.join(root_dir, 'categories.pkl'), 'rb') as fh:

@@ -1,8 +1,6 @@
-""" convert sequence data to png file """
 import os
 import glob
 from PIL import Image
-import re
 from warnings import simplefilter
 import yaml
 import argparse
@@ -11,11 +9,11 @@ import os.path
 import tqdm
 import warnings
 import pickle
-import launcher.pytorch_util as ptu
 from multiprocessing import Pool
 
 
 simplefilter(action='ignore', category=DeprecationWarning)
+
 
 def worker(img_path):
     img = Image.open(img_path, 'r').convert('L')  # covert to grayscale
@@ -59,49 +57,20 @@ class png2npz(object):
         for category in self.categories:
             png_path = os.path.join(dataset_root, 'png', category)
             out_path = os.path.join(dataset_root, 'npz', category)
+            temp = {}
             for mode in self.modes:
                 # save png data
                 p = Pool(exp_specs['num_workers'])
-                rets = []
                 image_paths = glob.glob(os.path.join(png_path, mode, '*.png'))
-                image_paths = sort_paths(image_paths)
                 print(len(image_paths))
-                for img_path in image_paths:
-                    ret = p.apply_async(worker, img_path)
-                    rets.append(ret)
-                pngs = []
-                for ret in rets:
-                    pngs.append(ret.get())
+                pngs = p.map(worker, image_paths)
                 pngs = np.stack(pngs, axis=0)
-
-                if mode == 'train':
-                    train_pngs = pngs
-                elif mode == 'valid':
-                    valid_pngs = pngs
-                elif mode == 'test':
-                    test_pngs = pngs
-            np.savez(out_path + "_png", train=train_pngs, valid=valid_pngs, test=test_pngs)
+                temp[mode] = pngs
+            if not os.path.exists(out_path):
+                os.makedirs(out_path, 0o777)
+            np.savez(out_path + "_png", train=temp['train'], valid=temp['valid'], test=temp['test'])
             pbar.update()
         pbar.close()
-
-
-
-def sort_paths(paths):
-    idxs = []
-    for path in paths:
-        idxs.append(int(re.findall(r'\d+', path)[-1]))
-
-    for i in range(len(idxs)):
-        for j in range(i + 1, len(idxs)):
-            if idxs[i] > idxs[j]:
-                tmp = idxs[i]
-                idxs[i] = idxs[j]
-                idxs[j] = tmp
-
-                tmp = paths[i]
-                paths[i] = paths[j]
-                paths[j] = tmp
-    return paths
 
 
 if __name__ == "__main__":

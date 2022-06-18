@@ -10,6 +10,7 @@ _project_folder_ = os.path.abspath('../')
 if _project_folder_ not in sys.path:
     sys.path.insert(0, _project_folder_)
 
+
 class MReLU(nn.Module):
     def __init__(self, max_value):
         super().__init__()
@@ -17,6 +18,7 @@ class MReLU(nn.Module):
 
     def forward(self, x):
         return torch.max(F.relu(x), self.max_value)
+
 
 class Generator(BaseModel):
     def __init__(self, 
@@ -58,8 +60,6 @@ class Generator(BaseModel):
         self.register_nets(nets, names, train_flags)
         self.to(device)
 
-        
-    
     def weight_init(self):
         for m in self.cnn.modules():
             if isinstance(m, nn.ConvTranspose2d):
@@ -76,6 +76,7 @@ class Generator(BaseModel):
         feature = self.cnn(noise_img)
         multi_channel_feature = torch.cat([feature, feature, feature], dim=1)
         return multi_channel_feature
+
 
 class Discriminator(BaseModel):
     def __init__(self,

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
-from swin_transformer import SwinTransformer
+from .swin_transformer import SwinTransformer
 
 
 class CNNBackbone(torch.nn.Module):

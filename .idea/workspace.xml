@@ -5,10 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b64d6a30-671e-4b4d-ba9e-e0d9766ed11d" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/exp_specs/seq2png.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/seq2png.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/seq2png_bk.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/cnn_trainer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exp_specs/cnn.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/exp_specs/cnn.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/cgan.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/cgan.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/modelzoo.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/modelzoo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/cgan.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/cgan.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/cnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/cnn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/png2npz.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/png2npz.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/r2cnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/r2cnn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/seq2png.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/seq2png.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/quickdraw_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/quickdraw_dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/r2cnn_trainer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +43,7 @@
     <setting file="file://$PROJECT_DIR$/models/sketch_r2cnn.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/neuralline/rasterize.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/scripts/r2cnn.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/utils/trainer.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/utils/r2cnn_trainer.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -44,18 +53,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/netherman/SynologyDrive/22_spring/机器学习/project/CS420-Final-Project/exp_specs&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "last_opened_file_path": "/Users/netherman/SynologyDrive/22_spring/机器学习/project/CS420-Final-Project/exp_specs",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/exp_specs" />
@@ -80,7 +90,7 @@
       <workItem from="1655275386884" duration="15588000" />
       <workItem from="1655435976477" duration="33000" />
       <workItem from="1655436016733" duration="18516000" />
-      <workItem from="1655536009013" duration="2804000" />
+      <workItem from="1655536009013" duration="10275000" />
     </task>
     <servers />
   </component>

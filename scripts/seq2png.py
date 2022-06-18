@@ -1,8 +1,5 @@
 """ convert sequence data to png file """
 import os
-import glob
-from PIL import Image
-import re
 from warnings import simplefilter
 import yaml
 import argparse
@@ -12,8 +9,6 @@ import torch
 import tqdm
 import warnings
 import pickle
-from matplotlib import pyplot as plt
-plt.switch_backend('agg')
 from torch.utils.data import DataLoader
 from neuralline.rasterize import Raster
 import torchvision
@@ -146,24 +141,6 @@ class SketchR2CNNTrain(object):
         return
 
 
-def sort_paths(paths):
-    idxs = []
-    for path in paths:
-        idxs.append(int(re.findall(r'\d+', path)[-1]))
-
-    for i in range(len(idxs)):
-        for j in range(i + 1, len(idxs)):
-            if idxs[i] > idxs[j]:
-                tmp = idxs[i]
-                idxs[i] = idxs[j]
-                idxs[j] = tmp
-
-                tmp = paths[i]
-                paths[i] = paths[j]
-                paths[j] = tmp
-    return paths
-
-
 if __name__ == "__main__":
     # Arguments
     parser = argparse.ArgumentParser()
@@ -184,6 +161,3 @@ if __name__ == "__main__":
         with warnings.catch_warnings():
             warnings.simplefilter('ignore')
             app.run()
-
-
-

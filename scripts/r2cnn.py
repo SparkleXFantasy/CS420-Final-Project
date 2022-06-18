@@ -4,9 +4,8 @@ import argparse
 import yaml
 
 import launcher.pytorch_util as ptu
-from launcher import logger
 from launcher.launcher_util import setup_logger
-from utils.trainer import SketchR2CNNTrain
+from utils.r2cnn_trainer import SketchR2CNNTrain
 
 simplefilter(action='ignore', category=DeprecationWarning)
 
