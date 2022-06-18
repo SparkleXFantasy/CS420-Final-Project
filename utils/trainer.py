@@ -536,7 +536,6 @@ class CGANTrain(object):
             for i in range(d_model.num_categories):
                 confidence_logits[i] = d_model(imgs, i).squeeze().to(self.device)
             res_list.append(confidence_logits)
-            
 
         return res_list
 
