@@ -56,7 +56,7 @@ class png2npz(object):
         pbar = tqdm.tqdm(total=len(self.categories))
         for category in self.categories:
             png_path = os.path.join(dataset_root, 'png', category)
-            out_path = os.path.join(dataset_root, 'npz', category)
+            out_path = os.path.join(dataset_root, 'quickdraw_visual', category)
             temp = {}
             for mode in self.modes:
                 # save png data

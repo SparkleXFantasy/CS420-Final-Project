@@ -98,7 +98,7 @@ class SketchR2CNNTrain(object):
         imgsize = self.config['imgsize']
         thickness = self.config['thickness']
 
-        png_path = os.path.join(self.config['log_dir'], 'png')
+        png_path = os.path.join(self.config['dataset_root'], 'png')
         if os.path.exists(png_path) is False:
             os.makedirs(png_path)
 

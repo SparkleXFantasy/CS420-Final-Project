@@ -5,9 +5,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import tqdm
-from matplotlib import pyplot as plt
 
-plt.switch_backend('agg')
 from torch.utils.data import DataLoader
 from torch.optim import lr_scheduler
 from .quickdraw_dataset import QuickDrawDataset
@@ -16,8 +14,6 @@ from models.modelzoo import CNN_MODELS
 from models.sketch_r2cnn import SketchR2CNN
 from neuralline.rasterize import Raster
 import torchvision
-
-
 
 def train_data_collate(batch):
     length_list = [len(item['points3']) for item in batch]
@@ -145,18 +141,11 @@ class SketchR2CNNTrain(object):
 
         if self.step_counters[mode] % 500 == 0 and self.config['intensity_channels'] >= 3:
             np.set_printoptions(threshold=np.inf)
-            # print(attention[0].cpu().detach().numpy())
-            # print('aaaaaaaaaaa')
-            # print(points_offset[0].cpu().detach().numpy())
-            # print(images[0][1].cpu().detach().numpy())
-            # print(images[0][2].cpu().detach().numpy())
             image_grid = torchvision.utils.make_grid(images[:, :3], nrow=8)
             if not os.path.exists(self.config['log_dir'] + '/images'):
                 os.makedirs(self.config['log_dir'] + '/images', 0o777)
             save_path = os.path.join(self.config['log_dir'], 'images', '{}_{}.png'.format(mode, step_counter))
             torchvision.utils.save_image(image_grid, save_path)
-            # raise Exception('Saved image')
-
 
         return logits, loss, category
 
