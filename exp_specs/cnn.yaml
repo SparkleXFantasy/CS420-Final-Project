@@ -25,9 +25,9 @@ algo_training:
     exp_name: "cnn"  # exp_name is required
     script_path: scripts.cnn
     batch_size: 32
-    imgsize: 224
+    imgsize: 28
     learn_rate_step: -1
-    num_epochs: 20
+    num_epochs: 5
     report_scalar_freq: 100
     valid_freq: 1
     weight_decay: -1

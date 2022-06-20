@@ -107,10 +107,15 @@ class SketchR2CNN(BaseModel):
         self.cnn = cnn_fn(pretrained=False, requires_grad=train_cnn, in_channels=intensity_channels)
 
         num_fc_in_features = self.cnn.num_out_features
-        self.fc = nn.Linear(num_fc_in_features, num_categories)
+        self.fc = nn.Linear(num_fc_in_features, num_categories) if num_fc_in_features > 0 else None
 
-        nets.extend([self.rnn, self.cnn, self.fc])
-        names.extend(['rnn', 'conv', 'fc'])
+        if self.fc is not None:
+            nets.extend([self.rnn, self.cnn, self.fc])
+            names.extend(['rnn', 'conv', 'fc'])
+        else:
+            nets.extend([self.rnn, self.cnn])
+            names.extend(['rnn', 'conv'])
+
         train_flags.extend([True, train_cnn, True])
 
         self.register_nets(nets, names, train_flags)
@@ -120,9 +125,12 @@ class SketchR2CNN(BaseModel):
         intensities, _ = self.rnn(points_offset, lengths)
 
         images = RasterIntensityFunc.apply(points, intensities, self.img_size, self.thickness, self.eps, self.device)
-        if images.size(1) == 1:
-            images = images.repeat(1, 3, 1, 1)
+        # if images.size(1) == 1:
+        #     images = images.repeat(1, 3, 1, 1)
         cnnfeat = self.cnn(images)
-        logits = self.fc(cnnfeat)
+        if self.fc is not None:
+            logits = self.fc(cnnfeat)
+        else:
+            logits = cnnfeat
 
         return logits, intensities, images

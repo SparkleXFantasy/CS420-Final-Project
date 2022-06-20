@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
 from .swin_transformer import SwinTransformer
+from vit_pytorch.deepvit import DeepViT
 
 
 class CNNBackbone(torch.nn.Module):
@@ -178,21 +179,21 @@ class SketchANetBackbone(CNNBackbone):
         else:
             x = self.conv1_new(x)
         x = F.relu(x)
-        x = F.max_pool2d(x, kernel_size=3, stride=2, padding=0) 
+        x = F.max_pool2d(x, kernel_size=3, stride=2, padding=0)
 
         x = self.conv2(x)
         x = F.relu(x)
-        x = F.max_pool2d(x, kernel_size=3, stride=2, padding=0) 
+        x = F.max_pool2d(x, kernel_size=3, stride=2, padding=0)
 
         x = self.conv3(x)
-        x = F.relu(x) 
+        x = F.relu(x)
 
         x = self.conv4(x)
-        x = F.relu(x) 
+        x = F.relu(x)
 
         x = self.conv5(x)
         x = F.relu(x)
-        x = F.max_pool2d(x, kernel_size=3, stride=2, padding=0) 
+        x = F.max_pool2d(x, kernel_size=3, stride=2, padding=0)
 
         x = x.view(x.size(0), -1)
         x = self.fc1(x)
@@ -205,30 +206,45 @@ class SketchANetBackbone(CNNBackbone):
 
         return x
 
+
 class SwinTransformerBackbone(CNNBackbone):
     def _init(self):
-        self.swin_transformer = SwinTransformer(in_chans=self.in_channels,num_classes=512)
+        self.swin_transformer = SwinTransformer(in_chans=self.in_channels, num_classes=25)
 
-        num_out_features = 512
+        num_out_features = -1
         return num_out_features
 
     def forward(self, x):
-
-
         return self.swin_transformer(x)
+
+
+class VitBackbone(CNNBackbone):
+    def _init(self):
+        self.vit = DeepViT(
+            image_size=28,
+            patch_size=28,
+            num_classes=25,
+            dim=1024,
+            depth=6,
+            heads=16,
+            mlp_dim=2048,
+            dropout=0.1,
+            emb_dropout=0.1,
+            channels=self.in_channels
+        )
+
+        num_out_features = -1
+        return num_out_features
+
+    def forward(self, x):
+        return self.vit(x)
+
 
 CNN_MODELS = {
     'densenet161': DenseNet161Backbone,
     'resnet101': ResNet101Backbone,
     'resnet50': ResNet50Backbone,
     'sketchanet': SketchANetBackbone,
-    'swintransformer': SwinTransformerBackbone
-}
-
-CNN_IMAGE_SIZES = {
-    'densenet161': 224,
-    'resnet101': 224,
-    'resnet50': 224,
-    'sketchanet': 225,
-    'swintransformer': 224
+    'swintransformer': SwinTransformerBackbone,
+    'vit': VitBackbone
 }

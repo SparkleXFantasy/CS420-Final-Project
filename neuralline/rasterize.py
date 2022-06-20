@@ -42,10 +42,10 @@ class RasterIntensityFunc(Function):
 
     @staticmethod
     def backward(ctx, grad_line_map):
-        grad_intensities = torch.zeros_like(ctx.saved_tensors[4])
+        grad_intensities = torch.zeros_like(ctx.saved_tensors[4]).contiguous()
 
         rasterize_cuda.rasterize_backward(
-            grad_intensities.contiguous(),
+            grad_intensities,
             grad_line_map.contiguous(),
             ctx.saved_tensors[0], 
             ctx.saved_tensors[1], 

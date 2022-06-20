@@ -11,6 +11,7 @@
         <option value="$MODULE_DIR$/launcher" />
         <option value="$MODULE_DIR$/models" />
         <option value="$MODULE_DIR$/utils" />
+        <option value="$MODULE_DIR$/tools" />
       </list>
     </option>
   </component>

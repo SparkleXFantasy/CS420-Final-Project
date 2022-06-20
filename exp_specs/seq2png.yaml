@@ -24,7 +24,7 @@ algo_training:
     exp_name: "seq2png"  # exp_name is required
     script_path: scripts.seq2png
     batch_size: 48
-    imgsize: 224
+    imgsize: 28
     learn_rate_step: -1
     thickness: 1.0
 

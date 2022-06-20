@@ -29,12 +29,14 @@ class CNN(BaseModel):
         names = list()
         train_flags = list()
 
-        self.cnn = cnn_fn(pretrained=False, requires_grad=train_cnn, in_channels=1)
+        self.cnn = cnn_fn(pretrained=False, requires_grad=train_cnn, in_channels=3)
 
         num_fc_in_features = self.cnn.num_out_features
-        self.fc = nn.Linear(num_fc_in_features, num_categories)
-
-        nets.extend([self.cnn, self.fc])
+        self.fc = nn.Linear(num_fc_in_features, num_categories) if num_fc_in_features > 0 else None
+        if self.fc is not None:
+            nets.extend([self.cnn, self.fc])
+        else:
+            nets.extend([self.cnn])
         names.extend(['conv', 'fc'])
         train_flags.extend([train_cnn, True])
 
@@ -42,7 +44,12 @@ class CNN(BaseModel):
         self.to(device)
 
     def __call__(self, images):
+        if images.size(1) == 1:
+            images = images.repeat(1, 3, 1, 1)
         cnnfeat = self.cnn(images)
-        logits = self.fc(cnnfeat)
+        if self.fc is not None:
+            logits = self.fc(cnnfeat)
+        else:
+            logits = cnnfeat
 
         return logits, images

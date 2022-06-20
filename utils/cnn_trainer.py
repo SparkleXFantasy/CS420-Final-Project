@@ -23,7 +23,6 @@ class CNNTrain(object):
 
         config['save_epoch_freq'] = 1
         config['valid_freq'] = 1
-        # config['imgsize'] = CNN_IMAGE_SIZES[config['model_fn']]
 
         if config['log_dir'] is None:
             raise Exception('No log_dir specified!')
@@ -42,7 +41,7 @@ class CNNTrain(object):
         np.random.seed(config['seed'])
         torch.manual_seed(config['seed'])
 
-        self.modes = ['train', 'valid']
+        self.modes = ['train', 'test']
         self.step_counters = {m: 0 for m in self.modes}
 
         self.device = exp_specs['device']
@@ -58,7 +57,7 @@ class CNNTrain(object):
         data_loaders = {
             m: DataLoader(dataset_dict[m],
                           batch_size=self.config['batch_size'],
-                          num_workers=3 if m == 'train' else 1,
+                          num_workers=64 if m == 'train' else 32,
                           shuffle=True if m == 'train' else False,
                           drop_last=True,
                           pin_memory=True) for m in self.modes
@@ -158,7 +157,7 @@ class CNNTrain(object):
 
                     if report_scalar_freq > 0 and self.step_counters[mode] % report_scalar_freq == 0:
                         logger.record_tabular("step", self.step_counters[mode])
-                        logger.record_tabular(f'{mode}/loss', self.step_counters[mode])
+                        logger.record_tabular(f'{mode}/loss', loss.mean().to('cpu').item())
                         logger.record_tabular(f'{mode}/accuracy', float(predicts_accu.data) / sampled_batch_size)
                         logger.dump_tabular(with_prefix=False, with_timestamp=False)
 
